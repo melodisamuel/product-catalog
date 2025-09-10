@@ -1,0 +1,44 @@
+name: CI/CD - Product Catalog API
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo:6
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd="mongosh --eval 'db.adminCommand(\"ping\")'"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        env:
+          MONGO_URI_TEST: mongodb://localhost:27017/product_catalog_test
+        run: npm test
+
+      - name: Mock Deployment
+        run: |
+          echo "✅ Tests passed, deploying application..."
+          echo "🌐 This is a mock deployment step (replace with real deploy command)"
