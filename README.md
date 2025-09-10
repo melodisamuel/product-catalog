@@ -64,3 +64,5 @@ DELETE	/:id	Delete product by ID
 Run unit tests:
 
 npm test
+
+Postman Documentation: https://documenter.getpostman.com/view/30119290/2sB3HnMLYN
